@@ -1,16 +1,18 @@
-# deb-server — Home Lab
+# deb-server — Home Lab Test Server
 
-![Debian](https://img.shields.io/badge/Debian-13_Trixie-A81D33?style=flat-square\&logo=debian\&logoColor=white)
-![Kernel](https://img.shields.io/badge/Kernel-6.12.74_amd64-333?style=flat-square\&logo=linux\&logoColor=white)
-![VirtualBox](https://img.shields.io/badge/VirtualBox-Oracle_VM-183A61?style=flat-square\&logo=virtualbox\&logoColor=white)
-![Nginx](https://img.shields.io/badge/Nginx-1.26.3-009639?style=flat-square\&logo=nginx\&logoColor=white)
-![PHP](https://img.shields.io/badge/PHP-8.4_FPM-777BB4?style=flat-square\&logo=php\&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-26.1.5-2496ED?style=flat-square\&logo=docker\&logoColor=white)
-![Grafana](https://img.shields.io/badge/Grafana-latest-F46800?style=flat-square\&logo=grafana\&logoColor=white)
-![Prometheus](https://img.shields.io/badge/Prometheus-latest-E6522C?style=flat-square\&logo=prometheus\&logoColor=white)
-![Portainer](https://img.shields.io/badge/Portainer-CE-13BEF9?style=flat-square\&logo=portainer\&logoColor=white)
+![Debian](https://img.shields.io/badge/Debian-13_Trixie-A81D33?style=flat&logo=debian&logoColor=white)
+![Kernel](https://img.shields.io/badge/Kernel-6.12.74_amd64-333?style=flat&logo=linux&logoColor=white)
+![VirtualBox](https://img.shields.io/badge/VirtualBox-Oracle_VM-183A61?style=flat&logo=virtualbox&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-1.26.3-009639?style=flat&logo=nginx&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.4_FPM-777BB4?style=flat&logo=php&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-26.1.5-2496ED?style=flat&logo=docker&logoColor=white)
+![Grafana](https://img.shields.io/badge/Grafana-latest-F46800?style=flat&logo=grafana&logoColor=white)
+![Prometheus](https://img.shields.io/badge/Prometheus-latest-E6522C?style=flat&logo=prometheus&logoColor=white)
+![Portainer](https://img.shields.io/badge/Portainer-CE-13BEF9?style=flat&logo=portainer&logoColor=white)
 
-Personal home server running as a VirtualBox VM on a local machine. Used for self-hosting, monitoring, and experimenting with server infrastructure.
+Personal VirtualBox-based test server running on a local machine. Used for self-hosting, monitoring, and experimenting with server infrastructure.
+
+>This is a temporary test environment rather than a production or long-term homelab. The VM is frequently rebuilt, reconfigured, or discarded to validate deployment scripts, infrastructure changes, and new self-hosted services.
 
 ## Overview
 
@@ -25,13 +27,13 @@ Personal home server running as a VirtualBox VM on a local machine. Used for sel
 
 ## Hardware (VM specs)
 
-| Component  | Details                               |
-| ---------- | ------------------------------------- |
-| **CPU**    | Intel Xeon E31230 @ 3.20 GHz (1 vCPU) |
-| **RAM**    | 1.9 GiB                               |
-| **Swap**   | 975 MiB                               |
-| **Disk 1** | 20 GB (`/dev/sda`) — OS               |
-| **Disk 2** | 20 GB (`/dev/sdb`) — `/var`           |
+| Component  | Details                                |
+| ---------- | -------------------------------------- |
+| **CPU**    | Intel Xeon E3-1230 @ 3.20 GHz (1 vCPU) |
+| **RAM**    | 1.9 GiB                                |
+| **Swap**   | 975 MiB                                |
+| **Disk 1** | 20 GB (`/dev/sda`) — OS                |
+| **Disk 2** | 20 GB (`/dev/sdb`) — `/var`            |
 
 ### Partition layout
 
@@ -42,7 +44,6 @@ sda (20 GB)
     ├── sda5  2.1  GB  —       [unmounted]
     ├── sda6  976  MB  [SWAP]  [logical — Linux swap]
     └── sda7  11.7 GB  /srv    [logical — Linux]
-
 sdb (20 GB)            /var
 ```
 
@@ -126,52 +127,6 @@ Open ports:
 | 22   | TCP      | SSH          |
 | 80   | TCP      | Nginx (HTTP) |
 | 5353 | UDP      | Avahi mDNS   |
-
-## Deployment
-
-This server was set up using scripts from **[rebootless/shell-toolkit](https://github.com/rebootless/shell-toolkit)**.
-
-### Order of execution
-
-#### 1. Bootstrap — base system setup
-
-```bash
-bash server-bootstrap.sh
-```
-
-Installs admin tools (`htop`, `git`, `curl`, etc.), configures sudo, firewalld (SSH allowed), and Fail2ban.
-
-#### 2. Nginx — web server + reverse proxy
-
-```bash
-bash deploy-nginx.sh
-```
-
-Installs Nginx + PHP 8.4-FPM, creates the virtual host for `deb-server.local`, configures the `/grafana/` and `/portainer/` reverse proxy blocks, and sets firewalld rules for HTTP/HTTPS.
-
-#### 3. Grafana stack — monitoring
-
-```bash
-bash deploy-grafana.sh
-```
-
-Installs Docker, generates `compose.yaml`, `.env`, Prometheus config, and Grafana provisioning inline at `/opt/grafana-stack/`. Starts the stack and auto-imports the **Node Exporter Full** dashboard (ID 19937) via the Grafana API.
-
-#### 4. Portainer stack — Docker management
-
-```bash
-bash deploy-portainer.sh
-```
-
-Installs Docker, generates `compose.yaml` inline at `/opt/portainer-stack/`, stores the admin password as a Docker secret, starts Portainer CE, and exposes it through Nginx at `/portainer/`.
-
-#### 5. (Optional) Server report
-
-```bash
-bash server-report.sh
-```
-
-Collects a full system snapshot (hardware, services, Docker, Nginx, firewall, logs) into a `server-report.tar.gz` archive.
 
 ## Screenshots
 
