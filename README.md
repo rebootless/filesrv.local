@@ -36,11 +36,11 @@ Personal file server running on repurposed physical hardware. Used for network-a
 
 Mounted individually under `/srv/` and bind-mounted into the `filebrowser` container:
 
-| Disk                 | Size   | Mountpoint          |
-| -------------------- | ------ | ------------------- |
-| Seagate ST3500413AS  | 465 GB | `/srv/ST3500413AS`  |
-| WD WD30PURZ (Purple) | 2.7 TB | `/srv/WDC-WD30PURZ` |
-| Seagate ST500DM002   | 465 GB | `/srv/ST500DM002`   |
+| Disk                 | Size   | Partition Table | Mountpoint |
+| -------------------- | ------ | --- | ------------------- |
+| Seagate ST3500413AS  | 465 GB | GPT | `/srv/ST3500413AS`  |
+| WD WD30PURZ (Purple) | 2.7 TB | GPT | `/srv/WDC-WD30PURZ` |
+| Seagate ST500DM002   | 465 GB | GPT | `/srv/ST500DM002`   |
 
 ## Architecture
 
