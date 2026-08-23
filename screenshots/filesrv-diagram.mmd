@@ -1,0 +1,49 @@
+flowchart LR
+
+    Client(["LAN Clients<br/>filesrv.local"])
+    OSDisk[("HP SSD S650<br/>120 GB")]
+
+    Nginx["Nginx<br/>Reverse Proxy :80"]
+
+    Client --> Nginx
+
+    subgraph Monitoring["grafana-stack"]
+        direction TB
+        Grafana["Grafana 13.1.1"]
+        Prometheus["Prometheus v3.13.1"]
+        NodeExporter["**Node** Exporter v1.12.1"]
+        Grafana --> Prometheus
+        Prometheus --> NodeExporter
+    end
+
+    subgraph PortainerStack["portainer-stack"]
+        Portainer["Portainer CE 2.39.5"]
+    end
+
+    subgraph Files["filebrowser-stack"]
+        Filebrowser["Filebrowser v2.63.22"]
+    end
+
+    Nginx -->|"/grafana/"| Grafana
+    Nginx -->|"/portainer/"| Portainer
+    Nginx -->|"/filebrowser/"| Filebrowser
+
+    Disk1[("ST3500413AS<br/>465 GB")]
+    Disk2[("WDC-WD30PURZ<br/>2.7 TB")]
+    Disk3[("ST500DM002<br/>465 GB")]
+
+    Filebrowser --> Disk1
+    Filebrowser --> Disk2
+    Filebrowser --> Disk3
+
+    OSDisk -.-> Nginx
+
+    classDef external fill:#4c566a,stroke:#81a1c1,color:#eceff4;
+    classDef proxy fill:#3b4252,stroke:#88c0d0,color:#eceff4;
+    classDef service fill:#434c5e,stroke:#5e81ac,color:#eceff4;
+    classDef storage fill:#2e3440,stroke:#a3be8c,color:#eceff4;
+
+    class Client external;
+    class Nginx proxy;
+    class Grafana,Prometheus,NodeExporter,Portainer,Filebrowser service;
+    class Disk1,Disk2,Disk3,OSDisk storage;

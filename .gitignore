@@ -2,12 +2,18 @@
 .env
 opt/grafana-stack/secrets/
 opt/portainer-stack/secrets/
+opt/filebrowser-stack/secrets/
 
 # Grafana data
 opt/grafana-stack/grafana/data/
+opt/grafana-stack/grafana/dashboards/
 
 # Prometheus data
 opt/grafana-stack/prometheus/data/
 
 # Portainer data
 opt/portainer-stack/data/
+
+# Filebrowser data (database + actual file shares)
+opt/filebrowser-stack/database/
+opt/filebrowser-stack/srv/

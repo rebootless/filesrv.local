@@ -1,0 +1,32 @@
+services:
+  filebrowser:
+    image: "filebrowser/filebrowser:v2.63.22"
+    restart: unless-stopped
+    environment:
+      FB_TOKEN_EXPIRATION_TIME: "720h"
+    command:
+      - -d
+      - /database/filebrowser.db
+      # File Browser has no way to detect that nginx is reverse-proxying it
+      # under /files/ (roles/nginx/templates/partials/filebrowser-proxy.conf.j2).
+      # Without --baseurl, File Browser generates all its internal links/API
+      # calls as if it owns the site root, so behind a /files/ prefix the UI
+      # loads a blank page and spins forever. --baseurl tells it "you are
+      # actually mounted at /files/", so it must match the nginx location
+      # exactly (including no trailing slash here).
+      - --baseurl
+      - /filebrowser
+    volumes:
+      - ./srv:/srv
+      - /srv/ST500DM002:/srv/ST500DM002
+      - /srv/WDC-WD30PURZ:/srv/WDC-WD30PURZ
+      - /srv/ST3500413AS:/srv/ST3500413AS
+      - ./database:/database
+    ports:
+      - "127.0.0.1:8080:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
