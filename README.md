@@ -3,11 +3,11 @@
 ![Debian](https://img.shields.io/badge/Debian-13_Trixie-A81D33?style=flat&logo=debian&logoColor=white)
 ![Kernel](https://img.shields.io/badge/Kernel-6.12.101-333?style=flat&logo=linux&logoColor=white)
 ![Hardware](https://img.shields.io/badge/Hardware-HP_Compaq_6200_Pro_SFF-0096D6?style=flat&logo=hp&logoColor=white)
-![Nginx](https://img.shields.io/badge/Nginx-reverse_proxy-009639?style=flat&logo=nginx&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-29.7.2-2496ED?style=flat&logo=docker&logoColor=white)
-![Grafana](https://img.shields.io/badge/Grafana-13.1.1-F46800?style=flat&logo=grafana&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-Reverse_Proxy-009639?style=flat&logo=nginx&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-v29.7.2-2496ED?style=flat&logo=docker&logoColor=white)
+![Grafana](https://img.shields.io/badge/Grafana-v13.1.1-F46800?style=flat&logo=grafana&logoColor=white)
 ![Prometheus](https://img.shields.io/badge/Prometheus-v3.13.1-E6522C?style=flat&logo=prometheus&logoColor=white)
-![Portainer](https://img.shields.io/badge/Portainer-2.39.5-13BEF9?style=flat&logo=portainer&logoColor=white)
+![Portainer](https://img.shields.io/badge/Portainer-v2.39.5-13BEF9?style=flat&logo=portainer&logoColor=white)
 ![Filebrowser](https://img.shields.io/badge/Filebrowser-v2.63.22-2E86AB?style=flat&logo=files&logoColor=white)
 
 Personal file server running on repurposed physical hardware. Used for network-attached file storage.
