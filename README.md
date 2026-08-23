@@ -56,7 +56,7 @@ flowchart LR
 
     subgraph Monitoring["grafana-stack"]
         direction TB
-        Grafana["Grafana 13.1.1"]
+        Grafana["Grafana v13.1.1"]
         Prometheus["Prometheus v3.13.1"]
         NodeExporter["**Node** Exporter v1.12.1"]
         Grafana --> Prometheus
@@ -64,7 +64,7 @@ flowchart LR
     end
 
     subgraph PortainerStack["portainer-stack"]
-        Portainer["Portainer CE 2.39.5"]
+        Portainer["Portainer CE v2.39.5"]
     end
 
     subgraph Files["filebrowser-stack"]
