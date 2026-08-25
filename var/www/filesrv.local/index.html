@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>filesrv.local</title>
+
+    <style>
+        :root {
+            --bg: #fff;
+            --fg: #000;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--bg);
+            color: var(--fg);
+
+            font-family: monospace;
+        }
+
+        main {
+            width: min(620px, calc(100% - 40px));
+        }
+
+        h1 {
+            margin: 0 0 24px;
+
+            font-size: 24px;
+            font-weight: normal;
+        }
+
+        nav {
+            border-top: 1px solid var(--fg);
+        }
+
+        a {
+            display: block;
+
+            padding: 12px 0;
+
+            border-bottom: 1px solid var(--fg);
+
+            color: var(--fg);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .service {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .invert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+
+            padding: 6px 10px;
+
+            background: var(--bg);
+            color: var(--fg);
+
+            border: 1px solid var(--fg);
+
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .invert:hover {
+            background: var(--fg);
+            color: var(--bg);
+        }
+    </style>
+</head>
+
+<body>
+
+<button class="invert" onclick="invertColors()">
+    [ invert ]
+</button>
+
+<main>
+    <h1>filesrv.local</h1>
+
+    <nav>
+        <a href="/filebrowser/">
+            <div class="service">
+                <span>File Browser</span>
+                <span>files →</span>
+            </div>
+        </a>
+
+        <a href="/grafana/">
+            <div class="service">
+                <span>Grafana</span>
+                <span>monitoring →</span>
+            </div>
+        </a>
+
+        <a href="/portainer/">
+            <div class="service">
+                <span>Portainer</span>
+                <span>containers →</span>
+            </div>
+        </a>
+    </nav>
+</main>
+
+<script>
+    function setTheme(inverted) {
+        document.documentElement.style.setProperty(
+            "--bg",
+            inverted ? "#000" : "#fff"
+        );
+
+        document.documentElement.style.setProperty(
+            "--fg",
+            inverted ? "#fff" : "#000"
+        );
+
+        localStorage.setItem("inverted", inverted);
+    }
+
+    function invertColors() {
+        const inverted = localStorage.getItem("inverted") === "true";
+        setTheme(!inverted);
+    }
+
+    setTheme(localStorage.getItem("inverted") === "true");
+</script>
+
+</body>
+</html>
