@@ -1,10 +1,10 @@
 # filesrv.local
 
 ![Debian](https://img.shields.io/badge/Debian-13_Trixie-A81D33?style=flat&logo=debian&logoColor=white)
-![Kernel](https://img.shields.io/badge/Kernel-6.12.101-333?style=flat&logo=linux&logoColor=white)
+![Kernel](https://img.shields.io/badge/Kernel-6.12.113-333?style=flat&logo=linux&logoColor=white)
 ![Hardware](https://img.shields.io/badge/Hardware-HP_Compaq_6200_Pro_SFF-0096D6?style=flat&logo=hp&logoColor=white)
 ![Nginx](https://img.shields.io/badge/Nginx-1.26.3-009639?style=flat&logo=nginx&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-29.7.2-2496ED?style=flat&logo=docker&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-29.9.2-2496ED?style=flat&logo=docker&logoColor=white)
 ![Grafana](https://img.shields.io/badge/Grafana-13.1.1-F46800?style=flat&logo=grafana&logoColor=white)
 ![Prometheus](https://img.shields.io/badge/Prometheus-3.13.1-E6522C?style=flat&logo=prometheus&logoColor=white)
 ![Portainer](https://img.shields.io/badge/Portainer-2.39.5-13BEF9?style=flat&logo=portainer&logoColor=white)
@@ -18,9 +18,11 @@ Personal file server running on repurposed physical hardware. Used for network-a
 | ------------ | ---------------------------------- |
 | **Hostname** | `filesrv`                          |
 | **OS**       | Debian GNU/Linux 13 (Trixie)       |
-| **Kernel**   | Linux 6.12.101+deb13-amd64         |
-| **Local IP** | `192.168.0.107` (DHCP reservation) |
+| **Kernel**   | Linux 6.12.113+deb13-amd64         |
+| **Local IP** | `192.168.0.176` (DHCP)             |
 | **Domain**   | `filesrv.local` (mDNS via Avahi)   |
+
+> Previously `192.168.0.107` (DHCP reservation). The reservation was lost when the router was replaced, so the address is now assigned dynamically.
 
 ## Hardware
 
@@ -30,17 +32,19 @@ Personal file server running on repurposed physical hardware. Used for network-a
 | **CPU**    | Intel Xeon E3-1230 @ 3.20 GHz (4C/8T)            |
 | **RAM**    | 32 GiB                                           |
 | **Swap**   | None                                             |
-| **OS disk**| HP SSD S650 120G (`/dev/sdc`) — `/` + `/boot/efi`|
+| **OS disk**| HP SSD S650 120G (`/dev/sdd`) — `/` + `/boot/efi`|
 
 ### Storage disks
 
 Mounted individually under `/srv/` and bind-mounted into the `filebrowser` container:
 
-| Disk                 | Size   | Partition Table | Mountpoint |
-| -------------------- | ------ | --- | ------------------- |
-| Seagate ST3500413AS  | 465 GB | GPT | `/srv/ST3500413AS`  |
-| WD WD30PURZ (Purple) | 2.7 TB | GPT | `/srv/WDC-WD30PURZ` |
-| Seagate ST500DM002   | 465 GB | GPT | `/srv/ST500DM002`   |
+| Disk                 | Size   | Partition Table | Mountpoint          | Device      | Used |
+| -------------------- | ------ | --------------- | ------------------- | ----------- | ---- |
+| Seagate ST3500413AS  | 465 GB | GPT             | `/srv/ST3500413AS`  | `/dev/sdb1` | 95%  |
+| WD WD30PURZ (Purple) | 2.7 TB | GPT             | `/srv/WDC-WD30PURZ` | `/dev/sda1` | 41%  |
+| Seagate ST500DM002   | 465 GB | GPT             | `/srv/ST500DM002`   | `/dev/sdc1` | 15%  |
+
+> `Device` and `Used` are a snapshot as of 2026-11-12; device letters can change between boots.
 
 ## Architecture
 
@@ -157,11 +161,13 @@ Config: [`etc/nginx/sites-available/filesrv.local`](etc/nginx/sites-available/fi
 
 Open ports (host-level):
 
-| Port | Protocol | Service      |
-| ---- | -------- | ------------ |
-| 22   | TCP      | SSH          |
-| 80   | TCP      | Nginx (HTTP) |
-| 5353 | UDP      | Avahi mDNS   |
+| Port | Protocol | Service                |
+| ---- | -------- | ---------------------- |
+| 22   | TCP      | SSH                    |
+| 68   | UDP      | dhcpcd (DHCP client)   |
+| 80   | TCP      | Nginx (HTTP)           |
+| 546  | UDP      | dhcpcd (DHCPv6 client) |
+| 5353 | UDP      | Avahi mDNS             |
 
 > All Docker services (Grafana, Portainer, Filebrowser) are bound to `127.0.0.1` only and reached exclusively through the Nginx reverse proxy.
 
