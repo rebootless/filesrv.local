@@ -62,7 +62,7 @@ flowchart LR
         direction TB
         Grafana["Grafana v13.1.1"]
         Prometheus["Prometheus v3.13.1"]
-        NodeExporter["**Node** Exporter v1.12.1"]
+        NodeExporter["Node Exporter v1.12.1"]
         Grafana --> Prometheus
         Prometheus --> NodeExporter
     end
